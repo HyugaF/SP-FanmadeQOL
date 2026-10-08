@@ -1,0 +1,8 @@
+{
+  "name": "Stronghold Protocol: Alliance",
+  "description": "An online multiplayer web remake of Arknights: Stronghold Protocol with Node.js backend and browser client.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

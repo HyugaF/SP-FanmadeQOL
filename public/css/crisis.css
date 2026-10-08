@@ -1,0 +1,616 @@
+/* ==========================================================================================
+   crisis.css — Arknights Contingency Contract (危机合约 / 危机模拟) UI Theme & Styling
+   ========================================================================================== */
+
+:root {
+  --cc-yellow: #f59e0b;
+  --cc-yellow-bright: #fbbf24;
+  --cc-yellow-dim: rgba(245, 158, 11, 0.15);
+  --cc-cyan: #38bdf8;
+  --cc-red: #ef4444;
+  --cc-red-glow: rgba(239, 68, 68, 0.35);
+  --cc-emerald: #10b981;
+  --cc-bg-dark: #0a0d0c;
+  --cc-bg-panel: #111614;
+  --cc-bg-card: #161c19;
+  --cc-border: rgba(255, 255, 255, 0.12);
+  --cc-hazard-stripe: repeating-linear-gradient(-45deg, rgba(245, 158, 11, 0.22) 0 8px, transparent 8px 16px);
+  --cc-hazard-stripe-red: repeating-linear-gradient(-45deg, rgba(239, 68, 68, 0.26) 0 8px, transparent 8px 16px);
+}
+
+/* ---- Risk Pips & Badges ----------------------------------------------------------------- */
+.cc-pip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.04rem;
+  padding: 0.02rem 0.08rem;
+  font-family: var(--font-num, "Rajdhani", sans-serif);
+  font-size: 0.15rem;
+  font-weight: 700;
+  line-height: 1;
+  clip-path: polygon(0 0, calc(100% - 0.06rem) 0, 100% 0.06rem, 100% 100%, 0.06rem 100%, 0 calc(100% - 0.06rem));
+  letter-spacing: 0.02em;
+}
+
+.cc-pip__tris {
+  font-size: 0.12rem;
+  letter-spacing: -0.04em;
+  opacity: 0.9;
+}
+
+.cc-pip--r1 {
+  background: rgba(56, 189, 248, 0.18);
+  border: 1px solid var(--cc-cyan);
+  color: var(--cc-cyan);
+}
+
+.cc-pip--r2 {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid var(--cc-yellow);
+  color: var(--cc-yellow-bright);
+}
+
+.cc-pip--r3 {
+  background: rgba(239, 68, 68, 0.25);
+  border: 1px solid var(--cc-red);
+  color: #ff8080;
+  box-shadow: 0 0 8px var(--cc-red-glow);
+}
+
+.cc-pip--support {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid var(--cc-emerald);
+  color: #6ee7b7;
+}
+
+/* Compact Risk Badge (Lobby, Room, HUD, Briefing) */
+.cc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.06rem 0.14rem 0.06rem 0.1rem;
+  background: #0f1412;
+  border: 1px solid var(--cc-border);
+  color: var(--text-hi);
+  font-family: inherit;
+  cursor: default;
+  transition: all 0.2s ease-out;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+
+.cc-badge::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--cc-yellow);
+}
+
+.cc-badge.is-clickable {
+  cursor: pointer;
+}
+
+.cc-badge.is-clickable:hover {
+  background: #171f1c;
+  border-color: var(--cc-yellow);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.cc-badge__icon {
+  font-size: 0.2rem;
+  color: var(--cc-yellow);
+  line-height: 1;
+}
+
+.cc-badge__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.01rem;
+}
+
+.cc-badge__label {
+  font-size: 0.11rem;
+  font-family: var(--font-num, "Rajdhani", sans-serif);
+  letter-spacing: 0.12em;
+  color: var(--text-lo);
+}
+
+.cc-badge__row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.08rem;
+}
+
+.cc-badge__num {
+  font-size: 0.26rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--cc-yellow);
+}
+
+.cc-badge__cnt {
+  font-size: 0.12rem;
+  color: var(--text-md);
+}
+
+/* Tier colors for badge */
+.cc-badge--low .cc-badge__num { color: var(--cc-cyan); }
+.cc-badge--low::before { background: var(--cc-cyan); }
+.cc-badge--mid .cc-badge__num { color: var(--cc-yellow-bright); }
+.cc-badge--high .cc-badge__num { color: #f97316; }
+.cc-badge--high::before { background: #f97316; }
+.cc-badge--max .cc-badge__num {
+  color: var(--cc-red);
+  text-shadow: 0 0 10px var(--cc-red-glow);
+}
+.cc-badge--max::before { background: var(--cc-red); }
+.cc-badge--support .cc-badge__num { color: var(--cc-emerald); }
+.cc-badge--support::before { background: var(--cc-emerald); }
+
+.cc-badge--sm {
+  padding: 0.03rem 0.1rem;
+  gap: 0.06rem;
+}
+.cc-badge--sm .cc-badge__num { font-size: 0.2rem; }
+.cc-badge--sm .cc-badge__icon { font-size: 0.14rem; }
+
+/* ---- Contingency Contract Modal & Matrix ------------------------------------------------ */
+.modal__box.cc-modal {
+  width: min(94vw, 15.6rem);
+  max-width: 15.6rem;
+  max-height: 88vh;
+  background: var(--cc-bg-dark);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  box-shadow: 0 12px 44px rgba(0, 0, 0, 0.85), 0 0 28px rgba(245, 158, 11, 0.12);
+}
+
+.modal__box.cc-modal .modal__head {
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.18), transparent 70%);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 0.18rem 0.28rem 0.12rem;
+}
+
+.modal__box.cc-modal .modal__stripe {
+  background: repeating-linear-gradient(-45deg, #f59e0b 0 10px, #18181b 10px 20px);
+  height: 4px;
+  opacity: 0.85;
+}
+
+.modal__box.cc-modal .modal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0.18rem 0.28rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cc-modal__foot-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.12rem;
+  margin-right: auto;
+}
+
+.cc-modal__ro-hint {
+  font-size: 0.14rem;
+  color: var(--text-lo);
+  font-style: italic;
+}
+
+.cc-matrix {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3.8rem;
+  gap: 0.24rem;
+  max-height: 66vh;
+  overflow: hidden;
+}
+
+.cc-matrix__rows {
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.14rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* Category Rows */
+.cc-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+
+.cc-row__head {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.04rem;
+}
+
+.cc-row__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1rem;
+}
+
+.cc-row__bar {
+  width: 3px;
+  height: 0.18rem;
+  background: var(--cc-yellow);
+}
+
+.cc-row__title h4 {
+  font-size: 0.18rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-hi);
+  margin: 0;
+}
+
+.cc-row__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(2.2rem, 1fr));
+  gap: 0.1rem;
+}
+
+/* Contract Card */
+.cc-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.05rem;
+  min-height: 1.08rem;
+  padding: 0.11rem 0.14rem;
+  background: var(--cc-bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: left;
+  color: var(--text-hi);
+  cursor: pointer;
+  transition: border-color 0.16s ease-out, background-color 0.16s ease-out, box-shadow 0.16s ease-out;
+  overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - 0.1rem) 0, 100% 0.1rem, 100% 100%, 0.1rem 100%, 0 calc(100% - 0.1rem));
+}
+
+.cc-card:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.32);
+  background: #1d2521;
+}
+
+.cc-card.is-readonly {
+  cursor: default;
+}
+
+.cc-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.06rem;
+}
+
+.cc-card__glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-md);
+  line-height: 1;
+}
+
+.cc-card__glyph .icon {
+  width: 0.18rem;
+  height: 0.18rem;
+}
+
+.cc-card__active-tag {
+  font-family: var(--font-num, "Rajdhani", sans-serif);
+  font-size: 0.11rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  background: var(--cc-yellow);
+  color: #0c0f0e;
+  padding: 0.02rem 0.06rem;
+  clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px));
+}
+
+.cc-card__name {
+  font-size: 0.16rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-hi);
+}
+
+.cc-card__desc {
+  font-size: 0.13rem;
+  color: var(--text-lo);
+  line-height: 1.45;
+}
+
+/* Active Contract Card */
+.cc-card.is-on {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(20, 26, 23, 0.95));
+  border-color: var(--cc-yellow);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.22);
+}
+
+.cc-card.is-on.cc-tier-3 {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(20, 26, 23, 0.95));
+  border-color: var(--cc-red);
+  box-shadow: 0 0 14px var(--cc-red-glow);
+}
+
+.cc-card.is-on.cc-tier-support {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(20, 26, 23, 0.95));
+  border-color: var(--cc-emerald);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
+}
+
+/* Dimmed mutex sibling */
+.cc-card.is-mutex-dim {
+  opacity: 0.55;
+  border-style: dashed;
+}
+.cc-card.is-mutex-dim:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* ---- CC Sidebar (Summary & Active List) -------------------------------------------------- */
+.cc-sidebar {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.14rem;
+  background: #0f1412;
+  border: 1px solid var(--cc-border);
+  padding: 0.18rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.cc-sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--cc-yellow);
+}
+
+.cc-sidebar--max::before { background: var(--cc-red); }
+.cc-sidebar--support::before { background: var(--cc-emerald); }
+
+.cc-sidebar__emblem {
+  display: flex;
+  align-items: center;
+  gap: 0.14rem;
+  padding-bottom: 0.12rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cc-sidebar__tri {
+  font-size: 0.44rem;
+  color: var(--cc-yellow);
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+.cc-sidebar--max .cc-sidebar__tri {
+  color: var(--cc-red);
+  text-shadow: 0 0 16px var(--cc-red-glow);
+}
+.cc-sidebar--support .cc-sidebar__tri {
+  color: var(--cc-emerald);
+}
+
+.cc-sidebar__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.02rem;
+}
+
+.cc-sidebar__kicker {
+  font-size: 0.11rem;
+  font-family: var(--font-num, "Rajdhani", sans-serif);
+  letter-spacing: 0.12em;
+  color: var(--text-lo);
+}
+
+.cc-sidebar__num {
+  font-size: 0.54rem;
+  font-weight: 900;
+  line-height: 1;
+  font-family: var(--font-num, "Rajdhani", sans-serif);
+  color: var(--cc-yellow);
+  letter-spacing: -0.02em;
+}
+
+.cc-sidebar--max .cc-sidebar__num {
+  color: var(--cc-red);
+  text-shadow: 0 0 16px var(--cc-red-glow);
+}
+.cc-sidebar--support .cc-sidebar__num {
+  color: var(--cc-emerald);
+}
+
+.cc-sidebar__status {
+  font-size: 0.13rem;
+  color: var(--text-md);
+  margin-top: 0.02rem;
+}
+
+.cc-sidebar__list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.14rem;
+  font-weight: 700;
+  color: var(--text-md);
+}
+
+.cc-sidebar__list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  padding-right: 0.06rem;
+}
+
+.cc-sidebar__empty {
+  font-size: 0.13rem;
+  color: var(--text-lo);
+  padding: 0.2rem 0;
+  text-align: center;
+}
+
+.cc-aitem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.03rem;
+  padding: 0.08rem 0.1rem;
+  background: var(--cc-bg-card);
+  border-left: 2px solid var(--cc-yellow);
+  font-size: 0.12rem;
+}
+
+.cc-aitem.cc-tier-3 { border-left-color: var(--cc-red); }
+.cc-aitem.cc-tier-support { border-left-color: var(--cc-emerald); }
+
+.cc-aitem__head {
+  display: flex;
+  align-items: center;
+  gap: 0.06rem;
+}
+
+.cc-aitem__name {
+  font-size: 0.14rem;
+  color: var(--text-hi);
+  flex: 1;
+}
+
+.cc-aitem__rm {
+  background: transparent;
+  border: none;
+  color: var(--text-lo);
+  cursor: pointer;
+  font-size: 0.16rem;
+  line-height: 1;
+  padding: 0 0.04rem;
+}
+.cc-aitem__rm:hover {
+  color: var(--cc-red);
+}
+
+.cc-aitem__desc {
+  color: var(--text-lo);
+  line-height: 1.35;
+}
+
+/* ---- Result Screen CC Seal -------------------------------------------------------------- */
+.result-cc-seal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  margin: 0.14rem 0;
+  padding: 0.16rem 0.24rem;
+  background: rgba(15, 20, 18, 0.85);
+  border: 1px solid var(--cc-yellow);
+  position: relative;
+  overflow: hidden;
+}
+
+.result-cc-seal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--cc-hazard-stripe);
+}
+
+.result-cc-seal__head {
+  display: flex;
+  align-items: center;
+  gap: 0.12rem;
+}
+
+.result-cc-seal__tri {
+  font-size: 0.36rem;
+  color: var(--cc-yellow);
+}
+
+.result-cc-seal__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-cc-seal__title {
+  font-size: 0.13rem;
+  font-family: var(--font-num, "Rajdhani", sans-serif);
+  letter-spacing: 0.15em;
+  color: var(--cc-yellow-bright);
+}
+
+.result-cc-seal__risk {
+  font-size: 0.46rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--cc-yellow);
+  font-family: var(--font-num, "Rajdhani", sans-serif);
+}
+
+.result-cc-seal__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.06rem;
+  max-width: 5.6rem;
+}
+
+.result-cc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.05rem;
+  padding: 0.03rem 0.08rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.13rem;
+}
+
+@media (max-width: 960px) {
+  .cc-matrix {
+    grid-template-columns: minmax(0, 1fr) 3.1rem;
+    gap: 0.16rem;
+  }
+  .cc-row__cards {
+    grid-template-columns: repeat(auto-fill, minmax(1.9rem, 1fr));
+  }
+}
+
+@media (max-height: 540px) {
+  .modal__box.cc-modal .modal__head {
+    padding: 0.1rem 0.22rem 0.08rem;
+  }
+  .modal__box.cc-modal .modal__body {
+    padding: 0.1rem 0.22rem;
+  }
+  .cc-matrix {
+    max-height: 58vh;
+  }
+  .cc-sidebar__num {
+    font-size: 0.38rem;
+  }
+}
